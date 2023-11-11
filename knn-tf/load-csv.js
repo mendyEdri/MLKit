@@ -22,10 +22,11 @@ module.exports = function loadCSV(
   }
 ) {
   let data = fs.readFileSync(filename, { encoding: 'utf-8' });
+  
   data = _.map(data.split('\n'), d => d.split(','));
   data = _.dropRightWhile(data, val => _.isEqual(val, ['']));
   const headers = _.first(data);
-
+  
   data = _.map(data, (row, index) => {
     if (index === 0) {
       return row;
@@ -43,7 +44,7 @@ module.exports = function loadCSV(
 
   let labels = extractColumns(data, labelColumns);
   data = extractColumns(data, dataColumns);
-
+  
   data.shift();
   labels.shift();
 
@@ -61,7 +62,7 @@ module.exports = function loadCSV(
       features: data.slice(trainSize),
       labels: labels.slice(trainSize),
       testFeatures: data.slice(0, trainSize),
-      testLabels: labels.slice(0, trainSize)
+      testLabels: labels.slice(0, trainSize),
     };
   } else {
     return { features: data, labels };
